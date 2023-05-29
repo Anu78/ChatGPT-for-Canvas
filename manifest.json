@@ -1,17 +1,27 @@
 {
-  "manifest_version": 3,
-  "name": "My Extension",
-  "version": "1.0",
-  "permissions": [
-    "activeTab"
-  ],
-  "action": {
-    "default_popup": "popup.html"
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://*.instructure.com/courses/*/quizzes/*/take"],
-      "js": ["contentScript.js"]
-    }
-  ]
+    "manifest_version": 3,
+    "name": "ChatGPT for Canvas",
+    "description": "Adds chatGPT answers and completes your canvas quizzes.",
+    "version": "1.0",
+    "permissions": [
+        "activeTab",
+        "storage",
+        "scripting",
+        "tabs"
+    ],
+    "action": {
+        "default_popup": "./popup/popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.instructure.com/courses/*/quizzes/*/take",
+                "https://example.com/*"
+            ],
+            "js": [
+                "contentScript.js"
+            ]
+        }
+    ],
+    "options_page": "./settings/settings.html"
 }
