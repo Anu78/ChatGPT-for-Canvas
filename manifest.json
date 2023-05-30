@@ -12,15 +12,19 @@
     "action": {
         "default_popup": "./popup/popup.html"
     },
+    "background": {
+        "service_worker": "./background.js"
+    },
     "content_scripts": [
         {
             "matches": [
-                "https://*.instructure.com/courses/*/quizzes/*/take",
+                "https://*.instructure.com/courses/*/quizzes/*",
                 "https://example.com/*"
             ],
             "js": [
                 "contentScript.js"
-            ]
+            ],
+            "run_at": "document_idle"
         }
     ],
     "options_page": "./settings/settings.html"
