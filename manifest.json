@@ -9,6 +9,9 @@
         "scripting",
         "tabs"
     ],
+    "host_permissions": [
+        "https://api.openai.com/*"
+    ],
     "action": {
         "default_popup": "./popup/popup.html"
     },
@@ -18,8 +21,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://*.instructure.com/courses/*/quizzes/*",
-                "https://example.com/*"
+                "https://*.instructure.com/courses/*/quizzes/*"
             ],
             "js": [
                 "contentScript.js"

@@ -4,18 +4,17 @@ var accessToken = "";
 // Retrieve the stored access token from storage
 chrome.storage.local.get({ accessToken: "" }, function (data) {
   accessToken = data.accessToken;
-  console.log(data.accessToken);
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   // Handle the message based on its content
 
-  const content = generate_prompt(request);
-  //const api_resp = gpt_api(content[0], content[1]);
-  const answer = ["False"];
-
-
-  sendResponse(answer);
+  (async function () {
+    const content = generate_prompt(request);
+    //const answers = await gpt_api(content[0], content[1]);
+    const answers = ["red", "blue", "green"];
+    sendResponse(answers);
+  })();
 });
 
 function generate_prompt(request) {
@@ -34,7 +33,7 @@ function generate_prompt(request) {
       max_tokens = 1;
       break;
     case "multiple_answers_question":
-      content = "return correct answer(s) only. " + request.question;
+      content = "correct answer(s) only. " + request.question;
       for (var i = 0; i < request.answers.length; i++) {
         content += "\n" + request.answers[i];
       }
@@ -46,9 +45,22 @@ function generate_prompt(request) {
   return [content, max_tokens];
 }
 
-function get_answer(response) {}
+function get_answer(response) {
+  var answers = [];
+  const tokens = response["usage"]["completion_tokens"];
+  const output = response["choices"][0]["message"]["content"];
 
-async function gpt_api(content, token_limit = 30) {
+  if (tokens === 1) {
+    answers.push(output); // true/false question or one word answer
+  } else {
+    // multiple answers questions
+    answers = output.split("\n");
+  }
+
+  return answers;
+}
+
+async function gpt_api(content, token_limit = 100) {
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -62,15 +74,16 @@ async function gpt_api(content, token_limit = 30) {
           role: "user",
           content: content,
         },
+        {
+          role: "system",
+          content: "return answer(s) split by newlines",
+        },
       ],
-      temperature: 0.7,
       max_tokens: token_limit,
+      temperature: 0.2,
     }),
   });
 
-  var data = await response.json();
-
-  answer = get_answer(data);
-
-  return answer;
+  const json = await response.json();
+  return get_answer(json);
 }
