@@ -2,90 +2,19 @@
 <html>
   <head>
     <title>ChatGPT for Canvas</title>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-      body {
-        width: 200px;
-        padding: 10px;
-        font-family: 'Poppins', Arial, sans-serif;
-        background-color: #1a1a1a;
-        color: white;
-      }
-
-      h1 {
-        text-align: center;
-        font-weight: 600;
-      }
-
-      .switch-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-      }
-
-      .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-      }
-
-      .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
-      .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #4d4d4d;
-        transition: 0.4s;
-        border-radius: 34px;
-      }
-
-      .slider:before {
-        position: absolute;
-        content: "Off";
-        height: 20px;
-        width: 40px;
-        left: 2px;
-        bottom: 6px;
-        background-color: #9b9b9b;
-        transition: 0.4s;
-        text-align: center;
-        line-height: 20px;
-        border-radius: 34px;
-      }
-
-      input:checked + .slider {
-        background-color: #2196f3;
-      }
-
-      input:checked + .slider:before {
-        content: "On";
-        left: 18px;
-        background-color: #1a1a1a;
-        color: white;
-      }
-    </style>
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <h1>ChatGPT for Canvas</h1>
+    <h2>enable?</h2>
 
     <div class="switch-container">
-      <label class="switch">
-        <input type="checkbox" id="toggleSwitch">
-        <span class="slider"></span>
-      </label>
+      <input type="checkbox" id="toggleSwitch" class="slider" />
+      <label class="slider-label" for="toggleSwitch"></label>
     </div>
-    <p><a href="../settings/settings.html" target="_blank">Open Settings</a></p>
+
+    <a href="../settings/settings.html" target="_blank" class="link"
+      >enter your token.</a
+    >
 
     <script src="popup.js"></script>
   </body>

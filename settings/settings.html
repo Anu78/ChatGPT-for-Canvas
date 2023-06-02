@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Extension Settings</title>
-    <style>
-      body {
-        background-color: #222;
-        color: #fff;
-        font-family: Arial, sans-serif;
-        text-align: center;
-      }
-
-      .container {
-        padding: 20px;
-      }
-
-      input[type="text"] {
-        width: 300px;
-        padding: 10px;
-        font-size: 16px;
-      }
-    </style>
+    <title>ChatGPT for Canvas Options</title>
+    <link rel="stylesheet" type="text/css" href="settings.css" />
   </head>
   <body>
     <div class="container">
-      <h1>Extension Settings</h1>
-      <input type="password" id="accessTokenInput" placeholder="Enter Access Token" />
-      <br />
-      <button id="saveButton">Save</button>
+      <h1>Options Page - enter your access token:</h1>
+      <form>
+        <input
+          type="password"
+          id="accessTokenInput"
+          placeholder="Enter Password"
+          class="password-input"
+        />
+        <button type="submit" id="saveButton" class="submit-button">
+          Submit
+        </button>
+      </form>
+      <div id="successMessage" class="success-message">
+        <p>Success! Your settings have been saved.</p>
+      </div>
     </div>
+
     <script src="settings.js"></script>
   </body>
 </html>

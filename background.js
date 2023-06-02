@@ -6,16 +6,28 @@ chrome.storage.local.get({ accessToken: "" }, function (data) {
   accessToken = data.accessToken;
 });
 
-chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(async function (
+  request,
+  sender,
+  sendResponse
+) {
   try {
     // Handle the message based on its content
     const content = generate_prompt(request);
     //const answers = await gpt_api(content[0], content[1]);
     const answers = await gpt_api(content[0]);
     // Send the response to the content script using chrome.tabs.sendMessage
-    chrome.tabs.sendMessage(sender.tab.id, { correct_answer: answers, answers: request.answers, question_id: request.question_id }, function (response) {
-      // Handle the response from the content script if needed
-    });
+    chrome.tabs.sendMessage(
+      sender.tab.id,
+      {
+        correct_answer: answers,
+        answers: request.answers,
+        question_id: request.question_id,
+      },
+      function (response) {
+        // Handle the response from the content script if needed
+      }
+    );
   } catch (error) {
     console.error(error);
   }
@@ -61,7 +73,6 @@ function get_answer(response) {
     }
 
     answers.push(output); // true/false question or one-word answer
-
   } else {
     // multiple answers questions
     answers = output.split("\n");

@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", Arial, sans-serif;
+  padding: 20px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+h2 {
+  text-align: center;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.slider {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  border-radius: 34px;
+  cursor: pointer;
+}
+
+.slider-label:before {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 4px;
+  left: 4px;
+  transition: 0.2s;
+}
+
+.slider:checked + .slider-label {
+  background-color: #2196f3;
+}
+
+.slider:checked + .slider-label:before {
+  transform: translateX(26px);
+}
+
+.link {
+  margin-top: 20px;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+  body {
+    --text-color: #333;
+    --background-color: #fff;
+    --link-color: #2196f3;
+  }
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  body {
+    --text-color: #fff;
+    --background-color: #333;
+    --link-color: #64b5f6;
+  }
+}

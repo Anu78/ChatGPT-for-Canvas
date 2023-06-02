@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "ChatGPT for Canvas",
-    "description": "Adds chatGPT answers and completes your canvas quizzes.",
+    "description": "Adds chatGPT-powered answers/hints to your canvas quizzes.",
     "version": "1.0",
     "permissions": [
         "activeTab",
