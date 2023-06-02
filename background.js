@@ -6,15 +6,19 @@ chrome.storage.local.get({ accessToken: "" }, function (data) {
   accessToken = data.accessToken;
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  // Handle the message based on its content
-
-  (async function () {
+chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+  try {
+    // Handle the message based on its content
     const content = generate_prompt(request);
     //const answers = await gpt_api(content[0], content[1]);
-    const answers = ["red", "blue", "green"];
-    sendResponse(answers);
-  })();
+    const answers = await gpt_api(content[0]);
+    // Send the response to the content script using chrome.tabs.sendMessage
+    chrome.tabs.sendMessage(sender.tab.id, { correct_answer: answers, answers: request.answers, question_id: request.question_id }, function (response) {
+      // Handle the response from the content script if needed
+    });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 function generate_prompt(request) {
@@ -48,10 +52,16 @@ function generate_prompt(request) {
 function get_answer(response) {
   var answers = [];
   const tokens = response["usage"]["completion_tokens"];
-  const output = response["choices"][0]["message"]["content"];
+  var output = response["choices"][0]["message"]["content"];
 
-  if (tokens === 1) {
-    answers.push(output); // true/false question or one word answer
+  if (tokens <= 2) {
+    // if answer ends in period, remove it
+    if (output[output.length - 1] === ".") {
+      output = output.slice(0, -1);
+    }
+
+    answers.push(output); // true/false question or one-word answer
+
   } else {
     // multiple answers questions
     answers = output.split("\n");
@@ -83,7 +93,9 @@ async function gpt_api(content, token_limit = 100) {
       temperature: 0.2,
     }),
   });
-
   const json = await response.json();
-  return get_answer(json);
+  console.log(json);
+  const answers = get_answer(json);
+
+  return answers;
 }
