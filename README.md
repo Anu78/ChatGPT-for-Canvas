@@ -1,14 +1,12 @@
 # Overview
 
-This is a Chrome extension that automatically highlights the correct answer on Canvas quizzes. It works by fetching the quiz data from the Canvas API and comparing it with the quiz questions on the web page.
+This is a Chrome extension that automatically highlights the correct answer on Canvas quizzes. It works by asking chatGPT the question and parsing its response. It makes quizzes a lot more convienient, as you don't have to switch back and forth.
 
 ## Features
 
 - Highlights the correct answer in green for multiple choice, true/false, and matching questions
-- Shows the correct answer in a tooltip for fill-in-the-blank and numerical questions
 - Works for both graded and practice quizzes
 - Supports quizzes with multiple attempts and random questions
-- Compatible with Canvas quizzes that use Respondus LockDown Browser
 
 ## Installation
 
