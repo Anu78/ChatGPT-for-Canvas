@@ -1,4 +1,3 @@
-// grab api key from local chrome storage
 var accessToken = "";
 
 // Retrieve the stored access token from storage
@@ -6,6 +5,7 @@ chrome.storage.local.get({ accessToken: "" }, function (data) {
   accessToken = data.accessToken;
 });
 
+// listen to message from content script
 chrome.runtime.onMessage.addListener(async function (
   request,
   sender,
@@ -14,9 +14,8 @@ chrome.runtime.onMessage.addListener(async function (
   try {
     // Handle the message based on its content
     const content = generate_prompt(request);
-    //const answers = await gpt_api(content[0], content[1]);
-    const answers = await gpt_api(content[0]);
-    // Send the response to the content script using chrome.tabs.sendMessage
+    const answers = await gpt_api(content[0], content[1]);
+    // send the response to the content script using chrome.tabs.sendMessage
     chrome.tabs.sendMessage(
       sender.tab.id,
       {
@@ -25,7 +24,7 @@ chrome.runtime.onMessage.addListener(async function (
         question_id: request.question_id,
       },
       function (response) {
-        // Handle the response from the content script if needed
+        // response is handled using tabs, not through listener
       }
     );
   } catch (error) {
@@ -33,6 +32,7 @@ chrome.runtime.onMessage.addListener(async function (
   }
 });
 
+// condense question into prompt
 function generate_prompt(request) {
   var content = "";
   var max_tokens = undefined;
@@ -46,7 +46,7 @@ function generate_prompt(request) {
       break;
     case "true_false_question":
       content = "TF." + request.question;
-      max_tokens = 1;
+      max_tokens = 2;
       break;
     case "multiple_answers_question":
       content = "correct answer(s) only. " + request.question;
@@ -58,9 +58,10 @@ function generate_prompt(request) {
       return;
   }
 
-  return [content, max_tokens];
+  return [content, max_tokens]; // true false questions only require 2 tokens
 }
 
+// get the api response from openAI
 function get_answer(response) {
   var answers = [];
   const tokens = response["usage"]["completion_tokens"];
@@ -96,7 +97,7 @@ async function gpt_api(content, token_limit = 100) {
           content: content,
         },
         {
-          role: "system",
+          role: "system", // advice to format and make respones more concise
           content: "return answer(s) split by newlines",
         },
       ],
@@ -104,7 +105,7 @@ async function gpt_api(content, token_limit = 100) {
       temperature: 0.2,
     }),
   });
-  const json = await response.json();
+  const json = await response.json(); // convert to json
   console.log(json);
   const answers = get_answer(json);
 

@@ -1,3 +1,4 @@
+// only register after page is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
   var toggleSwitch = document.getElementById("toggleSwitch");
 
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Save the state of the switch to storage
     chrome.storage.sync.set({ enabled: enabled });
 
-    // Send a message to the content script if it's available and hide elements
+    // Send a message to the content script *if it's available* and hide elements
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       var contentScriptPattern =
         "https://*.instructure.com/courses/*/quizzes/*"; // Replace with your desired regex pattern

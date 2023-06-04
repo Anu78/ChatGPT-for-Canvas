@@ -1,3 +1,4 @@
+// only register functions after page is loaded
 document.addEventListener("DOMContentLoaded", function () {
   var accessTokenInput = document.getElementById("accessTokenInput");
   var saveButton = document.getElementById("saveButton");
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   saveButton.addEventListener("click", function () {
     event.preventDefault();
     var accessToken = accessTokenInput.value;
+    // show popup to confirm API token set
     chrome.storage.local.set({ accessToken: accessToken }, function () {
       success_div[0].style.display = "block";
       setTimeout(function () {

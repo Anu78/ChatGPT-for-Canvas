@@ -28,12 +28,14 @@ To use this extension, follow these steps:
 2. Enable the extension using its popup menu.
 3. The correct answers for multiple choice, true/false, and multiple answer questions will be highlighted. (more coming soon.)
 
-## To-do for release 1.0
+## To-do
 
-- [ ] Add better commenting and documentation.
-- [ ] Change highlighting mechanism to be more appealing.
 - [ ] Add verification system for API token.
-- [ ] Create an extension icon.
+- [ ] Add support for more question types.
+- [ ] Add support for more customization in settings page.
+- [x] Add better commenting and documentation.
+- [x] Create an extension icon.
+- [x] Change highlighting mechanism to be more appealing.
 
 ## License
 

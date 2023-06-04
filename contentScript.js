@@ -14,17 +14,16 @@ var default_inner_question = [
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.hideElements) {
-    // Hide elements injected into the page
+    // enable/disable toggle
     toggleElements(false);
   } else {
-    // Show elements injected into the page
     toggleElements(true);
   }
 
   if (request.correct_answer) {
+    // chatgpt API response
     const answers = request.correct_answer;
-    console.log(answers);
-    // Find question with id = request.question_id
+    // Find question with the question ID
     var questionElement = document.querySelector(
       `a[name="${request.question_id}"]`
     ).parentElement;
@@ -33,16 +32,20 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       const answerInputs = questionElement.querySelectorAll("label");
 
       answerInputs.forEach((element) => {
-        const answer_text = element.textContent.trim();
+        // save answer text and answer block
+        var answer_text = element.textContent.trim();
+        var answer_label = element.querySelector(".answer_label");
 
         if (answers.includes(answer_text)) {
-          // select the correct answer
-          element.querySelector(".answer_label").style.border =
-            "2px solid green";
-          element.querySelector(".answer_label").style.padding = "1%";
-          element
-            .querySelector(".answer_label")
-            .classList.add("extension-visible");
+          // create highlight element
+          var highlight = document.createElement("mark");
+          highlight.style.backgroundColor = "lawngreen";
+          highlight.classList.add("extension-visible");
+
+          console.log(answer_label);
+          answer_label.innerHTML = ""; // delete original text
+          highlight.innerHTML = answer_text; // mark now contains answer text
+          answer_label.insertAdjacentElement("afterbegin", highlight); // insert mark element
         }
       });
     }
@@ -54,14 +57,12 @@ function toggleElements(visibility) {
   if (visibility) {
     // show elements with class extension-visible
     visible.forEach((element) => {
-      element.style.border = "2px solid green";
-      element.style.padding = "1%";
+      element.style.backgroundColor = "lawngreen";
     });
   } else {
     // hide elements with class extension-visible
     visible.forEach((element) => {
-      element.style.border = "none";
-      element.style.padding = "0%";
+      element.style.backgroundColor = "transparent";
     });
   }
 }
